@@ -9,7 +9,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
-public class SMS extends BroadcastReceiver {
+public class SMSReceiver extends BroadcastReceiver {
 
 	final SmsManager sms = SmsManager.getDefault();
 
@@ -27,8 +27,8 @@ public class SMS extends BroadcastReceiver {
 							.getDisplayOriginatingAddress();
 					String senderNum = phoneNumber;
 					String message = currentMessage.getDisplayMessageBody();
-					Log.i("WIFISMS", "senderNum: " + senderNum
-							+ "; message: " + message);
+					Log.i("WIFISMS", "senderNum: " + senderNum + "; message: "
+							+ message);
 					// Show Alert
 					int duration = Toast.LENGTH_LONG;
 					Toast toast = Toast.makeText(context, "senderNum: "
