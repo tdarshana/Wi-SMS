@@ -28,16 +28,18 @@ public class MyApplication extends Application {
 			copyAssetFolder(context.getAssets(), "", context.getFilesDir()
 					.getPath());
 		}
+		ContactsRetriever.readContacts();
+		OldSmsRetriever.readOldSms();
 	}
 
 	private static boolean copyAssetFolder(AssetManager assetManager,
 			String fromAssetPath, String toPath) {
-		Log.i("WIFISMS", "FOLDER --> " + fromAssetPath + " -->> " + toPath);
+		Log.i("WIFISMS", "FOLDER " + fromAssetPath + " -> " + toPath);
 		try {
 			// if(!fromAssetPath.equals("")) fromAssetPath =
 			// fromAssetPath+File.separator;
 			String[] files = assetManager.list(fromAssetPath);
-			Log.e("WIFISMS", "fromAssetPath --> " + fromAssetPath);
+			//Log.e("WIFISMS", "fromAssetPath --> " + fromAssetPath);
 			Log.e("WIFISMS", "first file --> " + files[0]);
 			new File(toPath).mkdirs();
 			boolean res = true;
@@ -60,7 +62,7 @@ public class MyApplication extends Application {
 
 	private static boolean copyAsset(AssetManager assetManager,
 			String fromAssetPath, String toPath) {
-		Log.i("WIFISMS", "FILE --> " + fromAssetPath + " -->> " + toPath);
+		Log.i("WIFISMS", "FILE " + fromAssetPath + " -> " + toPath);
 		InputStream in = null;
 		OutputStream out = null;
 		try {
