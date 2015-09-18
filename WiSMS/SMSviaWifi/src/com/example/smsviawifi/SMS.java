@@ -6,17 +6,23 @@ public class SMS {
 	String number;
 	String date;
 	String type;
+	String name;
 
-	public SMS(String date, String body, String number, String id, String type) {
+	public SMS(String date, String body, String number, String id, String type, String name) {
 		this.body = body;
 		this.number = number;
 		this.date = date;
 		this.id = id;
 		this.type = type;
+		this.name = name;
 	}
 
 	public String getid() {
 		return id;
+	}
+	
+	public String getname() {
+		return name;
 	}
 
 	public String getbody() {

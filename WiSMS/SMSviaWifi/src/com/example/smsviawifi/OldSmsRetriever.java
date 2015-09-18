@@ -66,7 +66,9 @@ public class OldSmsRetriever {
 			SMS rev_sms = new SMS(smsDate, cursor.getString(indexBody),
 					cursor.getString(indexAddr),
 					ContactsRetriever.getContactId(cursor.getString(indexAddr),
-							context), cursor.getString(indexType));
+							context), cursor.getString(indexType),
+					ContactsRetriever.getContactName(
+							cursor.getString(indexAddr), context));
 
 			smsList.add(rev_sms);
 
@@ -76,35 +78,56 @@ public class OldSmsRetriever {
 		try {
 			message = "{\"conversations\":[";
 			String conv;
+			int count;
 			ArrayList<SMS> convList = new ArrayList<SMS>();
 			while (!smsList.isEmpty()) {
 				conv = "-1";
-				for(SMS s : smsList){
-					if(conv.equals("-1")){
+				count = 10;
+				for (SMS s : smsList) {
+					if (conv.equals("-1")) {
 						conv = s.getnumber();
-						message += "{"
-							+"\"number\":\""+s.getnumber()+"\","
-							+"\"ID\":\""+s.getid()+"\","
-							+"\"messages\":[";
+						
+						message += "{" + "\"number\":\"" + s.getnumber().replaceAll("-", "")
+								+ "\"," + "\"ID\":\"" + s.getid() + "\","
+								+ "\"name\":\"" + s.getname() + "\","
+								+ "\"messages\":[";
 					}
-					if(s.getnumber().equals(conv)){
-						message += "{\"dir\":\""+s.getType()+"\",\"body\":\""+s.getbody()+"\",\"time\":\""+s.getdate()+"\"},";
+					if (s.getnumber()==null) {
+						if (count > 0)
+							message += "{\"dir\":\""
+									+ s.getType()
+									+ "\",\"body\":\""
+									+ s.getbody().replaceAll("\"", "\\\\\"")
+											.replaceAll("\n", "\\\\n")
+									+ "\",\"time\":\"" + s.getdate() + "\"},";
 						convList.add(s);
+						count--;
 					}
+					else if (s.getnumber().equals(conv)) {
+						if (count > 0)
+							message += "{\"dir\":\""
+									+ s.getType()
+									+ "\",\"body\":\""
+									+ s.getbody().replaceAll("\"", "\\\\\"")
+											.replaceAll("\n", "\\\\n")
+									+ "\",\"time\":\"" + s.getdate() + "\"},";
+						convList.add(s);
+						count--;
+					}
+
 				}
-				message = message.substring(0,message.length() - 1);
+				message = message.substring(0, message.length() - 1);
 				message += "]},";
-				for(SMS s : convList){
+				for (SMS s : convList) {
 					smsList.remove(s);
 				}
 			}
-			message = message.substring(0,message.length() - 1);
+			message = message.substring(0, message.length() - 1);
 			message += "]}";
 		} catch (Exception e) {
-			Log.e("WIFISMS","message string error :"+e.toString());
+			Log.e("WIFISMS", "message string error :" + e.toString());
 		}
 
-		
 		FileRead.writeFile(context.getFilesDir().getPath() + File.separator
 				+ "Data" + File.separator + "messages" + File.separator,
 				"messages.json", message);

@@ -48,15 +48,20 @@ public class ContactsRetriever {
 							null,
 							ContactsContract.CommonDataKinds.Phone.CONTACT_ID
 									+ " = ?", new String[] { id }, null);
+					
+					
+					boolean noNum=true;
 					while (pCur.moveToNext()) {
 						String phone = pCur
 								.getString(pCur
 										.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						// Log.i("WIFISMS","phone" + phone);
 						allContacts = allContacts + "\"" + phone + "\",";
+						noNum=false;
 					}
+					
 					pCur.close();
-
+					if(noNum) allContacts = allContacts + "-";
 					allContacts = allContacts.substring(0,
 							allContacts.length() - 1);
 
@@ -91,6 +96,28 @@ public class ContactsRetriever {
 			do {
 				contactId = cursor.getString(cursor
 						.getColumnIndex(PhoneLookup._ID));
+			} while (cursor.moveToNext());
+		}
+
+		cursor.close();
+		cursor = null;
+		return contactId;
+	}
+	public static String getContactName(String phoneNumber, Context context) {
+		ContentResolver mResolver = context.getContentResolver();
+
+		Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,
+				Uri.encode(phoneNumber));
+
+		Cursor cursor = mResolver.query(uri, new String[] {
+				PhoneLookup.DISPLAY_NAME, PhoneLookup._ID }, null, null, null);
+
+		String contactId = "";
+
+		if (cursor.moveToFirst()) {
+			do {
+				contactId = cursor.getString(cursor
+						.getColumnIndex(PhoneLookup.DISPLAY_NAME));
 			} while (cursor.moveToNext());
 		}
 

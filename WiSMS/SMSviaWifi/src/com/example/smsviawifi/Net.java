@@ -45,7 +45,9 @@ public class Net extends Thread {
 					path = "index.html";
 
 				if (!path.contains("png") && !path.contains("jpg")
-						&& !path.contains("ico")) {
+						&& !path.contains("ico") && !path.contains("woff")
+						&& !path.contains("svg") && !path.contains("eot")
+						&& !path.contains("ttf") && !path.contains("json")) {
 					Log.i("WIFISMS", " Sending TEXT");
 					PrintWriter out = new PrintWriter(Sock.getOutputStream());
 					out.println("HTTP/1.1 200 OK");
@@ -53,7 +55,15 @@ public class Net extends Thread {
 					String ss = FileRead.readFromFile(path);
 					out.print(ss);
 					out.flush();
-				} else {
+				} else if (path.contains("json")) {
+					Log.i("WIFISMS", " Sending TEXT");
+					PrintWriter out = new PrintWriter(Sock.getOutputStream());
+					out.println("HTTP/1.1 200 OK");
+					out.println("Content-Type: application/json\n\r\n\r");
+					String ss = FileRead.readFromFile(path);
+					out.print(ss);
+					out.flush();
+				}else {
 					Log.i("WIFISMS", " Sending DATA");
 					OutputStream outStream = Sock.getOutputStream();
 					InputStream inStream = FileRead.getInputStreamForFile(path);

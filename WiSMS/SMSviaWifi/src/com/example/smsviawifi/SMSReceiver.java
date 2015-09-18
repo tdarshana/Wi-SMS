@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
 public class SMSReceiver extends BroadcastReceiver {
 
@@ -30,10 +29,10 @@ public class SMSReceiver extends BroadcastReceiver {
 					Log.i("WIFISMS", "senderNum: " + senderNum + "; message: "
 							+ message);
 					// Show Alert
-					int duration = Toast.LENGTH_LONG;
-					Toast toast = Toast.makeText(context, "senderNum: "
-							+ senderNum + ", message: " + message, duration);
-					toast.show();
+					//int duration = Toast.LENGTH_LONG;
+					//Toast toast = Toast.makeText(context, "senderNum: "
+							//+ senderNum + ", message: " + message, duration);
+					//toast.show();
 				} // end for loop
 			} // bundle is null
 		} catch (Exception e) {

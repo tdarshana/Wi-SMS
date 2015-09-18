@@ -36,7 +36,7 @@ public class FileRead {
 	public static InputStream getInputStreamForFile(String file) {
 		InputStream inputStream = null;
 		try {
-
+			
 			inputStream = context.getAssets().open(file);
 		} catch (FileNotFoundException e) {
 			Log.e("WIFISMS", "File not found: " + e.toString());
