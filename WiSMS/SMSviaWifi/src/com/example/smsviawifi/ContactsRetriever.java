@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
 
-public class ContactsRetriever {
+public class ContactsRetriever extends Thread{
 
 	public static Context context = MyApplication.getAppContext();
 
@@ -78,6 +78,11 @@ public class ContactsRetriever {
 		FileRead.writeFile(context.getFilesDir().getPath() + File.separator
 				+ "Data" + File.separator + "contacts" + File.separator,
 				"contacts-list.json", allContacts);
+		synchronized(MainActivity.lock){
+			MainActivity.contactsLoaded = true;
+		}
+		
+		cur.close();
 
 	}
 
@@ -126,4 +131,12 @@ public class ContactsRetriever {
 		return contactId;
 	}
 
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+		readContacts();
+	}
+
+	
 }

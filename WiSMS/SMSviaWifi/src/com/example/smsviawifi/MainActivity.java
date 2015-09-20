@@ -19,6 +19,11 @@ import android.widget.ToggleButton;
 public class MainActivity extends Activity {
 
 	Net n = new Net();
+	
+	public static volatile boolean contactsLoaded = false;
+	public static volatile boolean messagesLoaded = false;
+	public static final Object lock = new Object();
+	
 
 	public static Context context = MyApplication.getAppContext();
 
@@ -40,6 +45,7 @@ public class MainActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						if (((ToggleButton) v).isChecked()) {
+							Net.go = true;
 							TextView t = (TextView) findViewById(R.id.textview1);
 
 							String ip = wifiIpAddress(context);
@@ -48,9 +54,15 @@ public class MainActivity extends Activity {
 							} else {
 
 								t.setText("Loading Contacts...");
-								ContactsRetriever.readContacts();
+								ContactsRetriever cr = new ContactsRetriever();
+								cr.start();
+								//wait for cr
+								
 								t.setText("Loading Previous Messages...");
-								OldSmsRetriever.readOldSms();
+								OldSmsRetriever osr = new OldSmsRetriever();
+								osr.start();
+								//wait for osr
+								
 								n.start();
 
 								t.setText("Goto http://" + ip + ":8080");
@@ -79,6 +91,7 @@ public class MainActivity extends Activity {
 	public void onDestroy() {
 		// n.terminate();
 		try {
+			Net.go = false;
 			n.join();
 		} catch (InterruptedException e) {
 			Log.d("WIFISMS", e.toString());

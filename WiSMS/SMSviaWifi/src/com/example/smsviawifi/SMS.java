@@ -1,15 +1,21 @@
 package com.example.smsviawifi;
 
+import java.util.ArrayList;
+
 public class SMS {
+	
+	public static ArrayList<SMS> smsList = new ArrayList<SMS>();
+	
 	String id;
 	String body;
 	String number;
 	String date;
-	String type;
+	String type; //sent or received
 	String name;
 	String snippet;
+	String read;
 
-	public SMS(String date, String body, String number, String id, String type, String snippet, String name) {
+	public SMS(String date, String body, String number, String id, String type, String snippet, String name, String read) {
 		this.body = body;
 		this.number = number;
 		this.date = date;
@@ -17,6 +23,7 @@ public class SMS {
 		this.type = type;
 		this.name = name;
 		this.snippet = snippet.substring(0,(snippet.length() < 20 ? snippet.length() : 20));
+		this.read = read;
 	}
 
 	public String getid() {
@@ -45,6 +52,10 @@ public class SMS {
 	
 	public String getSnippet() {
 		return snippet;
+	}
+	
+	public String getRead() {
+		return read;
 	}
 
 	public String getDetails() {
