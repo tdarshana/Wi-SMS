@@ -1,0 +1,317 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <link rel="icon" href="favicon.png" type="image/png" sizes="16x16">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <title>WiSMS</title>
+
+    <link href="styles.css" type="text/css" rel="stylesheet"/>
+    <link href="fonts/fonts.css" type="text/css" rel="stylesheet"/>
+    <link href="facescroller/general.css" rel="stylesheet" type="text/css"/>
+
+    <script type="text/javascript" src="jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="jquery/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="facescroller/facescroll.js"></script>
+
+    <script type="text/javascript">
+        jQuery(function(){ // on page DOM load
+            $('#scroller1').alternateScroll();
+            $('#scroller2').alternateScroll();
+        })
+    </script>
+
+</head>
+
+<body>
+<div class="wrapper_main">
+    <main class="sidebar">
+        <div class="app_icon">
+           <img src="Icons/msg.png" alt="AppIcon" style="width: 100%;padding: 9px"/>
+        </div>
+        <div class="app_name_vertical">
+            <a title="Go to WiSMS website." href="#"><b style="color: rgba(255,255,255,0.3);">Wi</b>SMS</a>
+        </div>
+    </main>
+
+	<!-- Contacts panel -->
+    <main class="contacts">
+
+	<!--  -->
+    <div class="container" style="width: 100%;height: 80%;padding-top: 3%">
+
+	<!-- Two tabs -->
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a data-toggle="tab" href="#conversations">Conversations</a></li>
+            <li><a data-toggle="tab" href="#contactsList">Contacts</a></li>
+        </ul>
+
+        <div class="tab-content">
+		
+		<!-- Conversations Tab -->
+			<div id="conversations" class="tab-pane fade in active">
+                <div class= "contact_container" id="scroller3" style="font-size: 20px">
+                        <div id="content_accordian">
+                            <div class="list-group panel" id="conv_list">
+                            
+                            </div>
+                        </div>
+                </div>
+            </div>
+		
+		<!-- Contact Tab -->
+            <div id="contactsList" class="tab-pane fade">
+			<!-- Seach box and find button -->
+                <div class="contatcts_header">
+                    <div class="row">
+                        <div class="input-group" style="width: 100%">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Find</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </div><!-- /.row -->
+
+				<!-- Contacts List goes here -->
+                <div class= "contact_container" id="scroller2" style="font-size: 20px">
+                        <div id="content_accordian">
+                            <div class="list-group panel" id="demo">
+                            
+                            </div>
+                        </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    </main>
+
+	<!-- Threded view -->
+    <main class="sms_threaded">
+        <div class="container" style="width: 100%;height: 100%;padding-top: 0%">
+		<!-- Thread Header -->
+			<div class="thread_header">
+			   <div class="contact_data">
+				   <h2 id="c_title"></h2>
+				   <h4 id="c_number" style="line-height: 2px"></h4>
+				   <hr>
+			   </div>
+			</div>
+
+			<!-- Messages -->
+			<div class="messages" id="scroller1"  style="margin-right: 0px;">
+				<section id="threader">
+					
+				</section>
+			</div>
+			
+			<!-- Message Box Send Button -->
+			<div class="contatcts_header" id="msgbox_and_sendbtn">
+				<div class="row">
+					<div class="input-group" style="width: 100%">
+						<!-- <input type="text" class="form-control" placeholder="Search for..."> -->
+						<textarea id="send_text" name="Text1" cols="60" rows="3"  ></textarea>
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="submit" onclick="Send_Msg(document.getElementById('send_text').value);">Send</button>
+						</span>
+					</div><!-- /input-group -->
+				</div><!-- /.col-lg-6 -->
+			</div><!-- /.row -->
+			
+        </div>
+    </main>
+</div>
+</body>
+
+    <!-- Parsing JSON  as XMLHTTP-->
+    <script type="text/javascript">
+	
+	var current_thread_id;
+	var current_pNumber;
+	
+	document.getElementById("msgbox_and_sendbtn").style.visibility='hidden';
+
+        function AJAX_JSON_Req( url ){
+            var AJAX_req = new XMLHttpRequest();
+            AJAX_req.open( "GET", url, true );
+            AJAX_req.setRequestHeader("Content-type", "application/json");
+
+            var contact_p1 = "<a href=\"#";
+            var contact_p2 = "\" class=\"list-group-item\" style=\"border-right: none;border-left: none;font-weight:bold\" data-toggle=\"collapse\" data-parent=\"#content_accordian\">";
+            var contact_list="";
+
+            AJAX_req.onreadystatechange = function(){
+                if( AJAX_req.readyState == 4 && AJAX_req.status == 200 ){
+                    var response = JSON.parse( AJAX_req.responseText );
+                    //document.write( response.name );
+
+                    for (var i = 0; i < response.contacts.length; i++) {
+                        var counter = response.contacts[i];
+
+                        //document.getElementById("demo").innerHTML = counter.name;
+
+                        var numbers = "";
+                        var c_name = counter.name;
+
+                        for (var a=0;a<counter.numbers.length;a++){
+                            numbers += "<a href=\"javascript:;\" style=\"text-align: end;border:none;font-size: medium\" class=\"list-group-item\" onclick=\"AJAX_JSON_Req_For_Threader('Data/messages/messages-"+counter.ID+".json','"+counter.ID+"')\">"+counter.numbers[a]+"</a>";
+                        }
+                        contact_list += contact_p1+i+contact_p2+c_name+"</a>"+"<div class=\"collapse\" id=\""+i+"\">"+numbers+"</a></div>"
+                    }
+                    document.getElementById("demo").innerHTML = contact_list; //
+                }
+            }
+            AJAX_req.send();
+        }
+
+        AJAX_JSON_Req("Data/contacts/contacts-list.json");
+		
+		//For conversation list
+		
+		function AJAX_JSON_Req_conv( url ){
+            var AJAX_req = new XMLHttpRequest();
+            AJAX_req.open( "GET", url, true );
+            AJAX_req.setRequestHeader("Content-type", "application/json");
+
+            var contact_list="";
+
+            AJAX_req.onreadystatechange = function(){
+                if( AJAX_req.readyState == 4 && AJAX_req.status == 200 ){
+                    var response = JSON.parse( AJAX_req.responseText );
+                    //document.write( response.name );
+
+                    for (var i = 0; i < response.conversations.length; i++) {
+                        var counter = response.conversations[i];
+
+                        //document.getElementById("demo").innerHTML = counter.name;
+
+                        var numbers = "";
+                        var c_name = counter.name;
+						if(c_name == ""){
+							c_name = counter.number;
+						}
+						
+                        //for (var a=0;a<counter.numbers.length;a++){
+                        //    numbers += "<a href=\"javascript:;\" style=\"text-align: end;border:none;font-size: medium\" class=\"list-group-item\" onclick=\"AJAX_JSON_Req_For_Threader('Data/messages/messages-"+counter.ID+".json','"+counter.ID+"')\">"+counter.numbers[a]+"</a>";
+                        //}
+                        contact_list += "<a href=\"#conv"+i+"\" class=\"list-group-item\" onclick=\"AJAX_JSON_Req_For_Threader('Data/messages/messages-"+counter.ID+".json','"+counter.ID+"')\" style=\"border-right: none;border-left: none;font-weight:bold\" data-toggle=\"collapse\" data-parent=\"#content_accordian\">"+c_name+"</a>"+"<div class=\"collapse\" id=\""+"conv"+i+"\">"+numbers+"</a></div>"
+                    }
+                    document.getElementById("conv_list").innerHTML = contact_list; //
+                }
+            }
+            AJAX_req.send();
+        }
+
+        AJAX_JSON_Req_conv("Data/messages/messages-list.json");
+
+    // For Threader ---------------------------------------------------------------
+
+        function AJAX_JSON_Req_For_Threader( url , contact_id){
+            var AJAX_req = new XMLHttpRequest();
+            AJAX_req.open( "GET", url, true );
+            AJAX_req.setRequestHeader("Content-type", "application/json");
+
+            /*<div class="from-them">
+                    <p>Checking out iOS7 you know..</p>
+            <p style="font-size: small; color:rgba(150,150,150,0.9)">2015-08-25 7:45pm </p>
+            </div>
+            <div class="clear"></div>*/
+
+            var msg_p1 = "<div class=\"";
+            var msg_p2 = "\"><p>";
+            var msg_p3 = "</p><p style=\"font-size: small;opacity:0.5\">";
+            var msg_p4 = "</p></div><div class=\"clear\"></div>";
+
+            var msg_list = "";
+
+            AJAX_req.onreadystatechange = function(){
+                if( AJAX_req.readyState == 4 && AJAX_req.status == 200 ){
+                    var response = JSON.parse( AJAX_req.responseText );
+                    var thread = "";
+
+                    //for (var i = 0; i < response.messages.length; i++) {
+
+                        //var counter = response.messages[i];
+                        //alert(counter.number==contact_num);
+                        var t_num = response.number;
+						var t_id = response.ID;
+
+						current_thread_id = t_id;
+						current_pNumber = t_num;
+                        //if(t_id == contact_id) {
+                            //document.getElementById("demo").innerHTML = counter.name;
+                            var t_name = response.name;
+                            document.getElementById("c_title").innerHTML = t_name;
+                            document.getElementById("c_number").innerHTML = t_num;
+                            var t_messages = response.messages;
+
+                            for (var a = 0; a < t_messages.length; a++) {
+                                var message = t_messages[a];
+                                var dir = message.dir;
+                                var content = message.body;
+                                var time = message.time;
+                                if (dir == "1") {
+                                    thread = msg_p1 + "from-them" + msg_p2 + content + msg_p3 + time + msg_p4 + thread;
+                                } else {
+                                    thread = msg_p1 + "from-me" + msg_p2 + content + msg_p3 + time + msg_p4 + thread;
+                                }
+
+                            }
+                        //}
+                    //}
+                    document.getElementById("threader").innerHTML = thread; //
+					document.getElementById("msgbox_and_sendbtn").style.visibility='visible';
+					document.getElementById('send_text').value='';
+                }
+            }
+            AJAX_req.send();
+        }
+
+       // AJAX_JSON_Req_For_Threader("Data/messages/messages.json","+94710632212");
+	   
+	   //send button click
+		function Send_Msg(msg){
+		alert(current_pNumber);
+			msg = format_string(msg);
+			var http = new XMLHttpRequest();
+			var url = "sendmsg";
+			var params = "number="+current_pNumber+"&message="+msg;
+			http.open("POST", url, true);
+
+			//Send the proper header information along with the request
+			http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			http.setRequestHeader("Content-length", params.length);
+			http.setRequestHeader("Connection", "close");
+
+			http.onreadystatechange = function() {//Call a function when the state changes.
+				if(http.readyState == 4 && http.status == 200) {
+					alert(http.responseText);
+				}
+			}
+			http.send(params);
+		}
+		
+		function format_string(str){
+			var res = JSON.stringify(str).slice(1, -1).replace(/\\n/g, "\\n")
+                                      .replace(/\\'/g, "\\'")
+                                      .replace(/\\"/g, '\\"')
+                                      .replace(/\\&/g, "\\&")
+                                      .replace(/\\r/g, "\\r")
+                                      .replace(/\\t/g, "\\t")
+                                      .replace(/\\b/g, "\\b")
+                                      .replace(/\\f/g, "\\f");
+									  
+			alert(res);
+			return res;
+		}
+		
+
+    </script>
+
+</html>

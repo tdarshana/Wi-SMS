@@ -30,9 +30,11 @@ public class Net extends Thread {
 	public void run() {
 		Socket Sock = null;
 		String inp = "";
+		
 		while (go) {
 			// i++;
 			try {
+				Sock.setSoTimeout(1000);
 				Sock = ServSock.accept();
 				Log.d("WIFISMS", "connected...");
 

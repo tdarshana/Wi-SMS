@@ -1,0 +1,239 @@
+html{
+    
+  text-rendering: optimizeLegibility;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+hr{
+    height: 2px;
+    opacity: 0.5;
+    border: 0;
+    background-color: rgba(0,0,0,0.5)
+}
+
+body,main::before {
+  background: url(bkg11.jpg) 0/cover fixed;
+
+}
+
+.wrapper_main{
+    margin: 40px 12%;
+    margin-top: 4%;
+    width: 85%;
+    box-shadow: 5px 5px 55px rgba(0,0,0,1);
+}
+
+main {
+  margin: auto;
+  position: relative;
+  background: rgba(255, 255, 255, 0.3);
+  height: 85%;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+main::before {
+  content: '';
+  margin: -100px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-filter: blur(30px);
+          filter: blur(30px);
+  z-index: -1;
+}
+
+.sidebar{
+   background: rgba(0, 0, 0, 0.7); 
+    float: left;
+    border-radius: 5px 0px 0px 5px;
+    width: 5%;
+    box-shadow: -5px 0px 10px rgba(0,0,0,0.2);
+}
+
+.contacts{
+    margin-left:0;
+    float: left;
+    background: rgba(250, 255, 255, 0.9);
+    width: 30%;
+    box-shadow: -5px 0px 10px rgba(0,0,0,0.2);
+}
+
+.sms_threaded{
+    width: 50%;
+    border-radius: 0px 5px 5px 0px;
+    float: left;
+    box-shadow: 5px 0px 10px rgba(0,0,0,0.2);
+}
+
+.thread_header{    
+    margin-top: 5%;
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 0.5;
+    color: rgba(255,255,255,0.9);
+    font-family: 'Roboto-Light', sans-serif;
+}
+
+.contact_image{
+    margin-top: -2%;
+    width: 100px;
+	height: 100px;
+    background-size: 80px 80px;
+	border-radius: 80px;
+	-webkit-border-radius: 80px;
+	-moz-border-radius: 80px;
+	background: url(Data/contacts/contact4.png) no-repeat;
+    float: left;
+    padding:0px;
+    margin-left: 30px; 
+    border:3px outset rgba(155,255,255,0.9);
+    
+}
+
+.contact_data{
+    padding-top: -30%;
+    padding-left:8%;
+    padding-right: 6%;
+    cursor: default; 
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select:none;
+    user-select:none;
+    -o-user-select:none;
+    text-shadow: -0.1px 0 grey, 0 0.1px grey, 0.1px 0 grey, 0 -0.1px grey;
+}
+
+.app_icon{
+    /*background: url() no-repeat;*/
+}
+
+.messages{
+    margin-top: 15px;
+    padding: 10px 50px 10px 50px;
+    font-family: 'Roboto-Light',sans-serif;
+    font-size: 15px;
+    overflow-y: auto;
+    height: 55%;
+}
+
+/* textarea  for msg */
+.msgarea{
+    overflow: auto; /* Remove default scrollbars in IE */
+    resize: none; /*Remove resize handle */
+    outline: none; /* Remove outline blue glow*/
+}
+
+.app_icon > img{
+    width:80%;
+    height:10%;
+    margin: auto;
+    padding-left: 10%;
+}
+
+.app_name_vertical{
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    font-family: 'Roboto-Thin',sans-serif;
+    margin-top: 720%;
+    
+}
+
+.app_name_vertical > a{
+    color: rgba(255,255,255,0.2);
+    text-decoration: none;
+    font-size: 3em;
+    -webkit-transition: color 200ms ease-in;
+    transition: color 200ms ease-in;
+}
+.app_name_vertical > a:hover {
+    color: rgba(255,255,255,0.5);
+}
+
+/* Styles for Search box in contact list */
+.contatcts_header{
+    margin: 2% auto;
+    padding: 5% 5% 5% 5%;
+    box-shadow: #000;
+    border-color: #000;
+}
+.search_bar{
+    padding: 2px;
+    border: solid 2px rgba(0,0,0,.1);
+    border-radius: 8px;
+    margin: auto;
+
+}
+
+
+.contact_container {
+    margin-top: 15px;
+    font-family: 'Roboto-Light',sans-serif;
+    text-align: justify;
+    font-size: 15px;
+    overflow-y: auto;
+    height: 90%;
+}
+
+.alt-scroll-content{
+    width: 100% !important;
+}
+
+#demo{
+    overflow-y: auto;
+    height: 100%;
+}
+
+/*--- Regards Bubble View---*/
+section {
+    padding: 0 25px 0 25px;
+    max-width: 600px;
+    margin: 5px auto;
+}
+section div {
+    max-width: 255px;
+    word-wrap: break-word;
+    margin-bottom: 8px;
+    line-height: 24px;
+}
+
+.clear {
+    clear: both;
+}
+
+.from-me {
+    position: relative;
+    padding: 10px 20px 5px;
+    color: white;
+    background: #0B93F6;
+    border-radius: 25px 25px 0 25px;
+    float: right;
+}
+.from-them {
+    position: relative;
+    padding: 10px 20px 5px;
+    background: #E5E5EA;
+    border-radius: 25px 25px 25px 0;
+    color: black;
+    float: left;
+}
+/*-- Bubble View End--*/
+
+/* Contact Header*/
+
+.contact_data > h2,h4{
+    color: rgba(0,0,0,.9);
+}
+
+/* Styles for Accordian*/
+.list-group-item{
+    color: #000;
+    font-size: medium;
+}
+/* -- End of Accordian --*/
