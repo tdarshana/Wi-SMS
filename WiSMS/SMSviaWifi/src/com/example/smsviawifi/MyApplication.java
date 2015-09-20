@@ -28,8 +28,7 @@ public class MyApplication extends Application {
 			copyAssetFolder(context.getAssets(), "", context.getFilesDir()
 					.getPath());
 		}
-		ContactsRetriever.readContacts();
-		OldSmsRetriever.readOldSms();
+		
 	}
 
 	private static boolean copyAssetFolder(AssetManager assetManager,

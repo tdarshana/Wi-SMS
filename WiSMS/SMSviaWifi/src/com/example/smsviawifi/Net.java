@@ -8,11 +8,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
+import android.content.Context;
 import android.util.Log;
 
 public class Net extends Thread {
 
 	private ServerSocket ServSock = null;
+	public static boolean go = true;
+	
+	public static Context context = MyApplication.getAppContext();
 
 	public Net() {
 		try {
@@ -26,7 +30,7 @@ public class Net extends Thread {
 	public void run() {
 		Socket Sock = null;
 		String inp = "";
-		while (true) {
+		while (go) {
 			// i++;
 			try {
 				Sock = ServSock.accept();
@@ -43,8 +47,11 @@ public class Net extends Thread {
 
 				if (path.equals(""))
 					path = "index.html";
-
-				if (!path.contains("png") && !path.contains("jpg")
+				
+				/*if (path.contains("sendmsg")) {
+					Toast.makeText( context, inp, Toast.LENGTH_SHORT ).show();
+				}else */
+					if (!path.contains("png") && !path.contains("jpg")
 						&& !path.contains("ico") && !path.contains("woff")
 						&& !path.contains("svg") && !path.contains("eot")
 						&& !path.contains("ttf") && !path.contains("json")) {
@@ -86,5 +93,12 @@ public class Net extends Thread {
 				}
 			}
 		}
+		
+		try {
+			Sock.close();
+		} catch (IOException e) {
+			Log.d("WIFISMS", e.toString());
+		}
+		
 	}
 }

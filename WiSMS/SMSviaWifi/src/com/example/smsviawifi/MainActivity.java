@@ -5,27 +5,62 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteOrder;
 
+
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 
 	Net n = new Net();
+	
+	public static Context context = MyApplication.getAppContext();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		n.start();
-		TextView t = (TextView) findViewById(R.id.textview1);
-		String ip = wifiIpAddress(this);
-		t.setText("Goto http://" + ip + ":8080");
 	}
+	
+	
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		
+		findViewById(R.id.toggleButton1).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+					if(((ToggleButton)v).isChecked()){
+						ContactsRetriever.readContacts();
+						OldSmsRetriever.readOldSms();
+						n.start();
+						TextView t = (TextView) findViewById(R.id.textview1);
+						String ip = wifiIpAddress(context);
+						t.setText("Goto http://" + ip + ":8080");
+					}else{
+						Net.go = false;
+						try {
+							n.join();
+						} catch (InterruptedException e) {
+							Log.d("WIFISMS", e.toString());
+						}
+						TextView t = (TextView) findViewById(R.id.textview1);
+						t.setText("Stopped");
+					}
+			}
+		});
+	}
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

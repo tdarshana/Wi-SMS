@@ -7,14 +7,16 @@ public class SMS {
 	String date;
 	String type;
 	String name;
+	String snippet;
 
-	public SMS(String date, String body, String number, String id, String type, String name) {
+	public SMS(String date, String body, String number, String id, String type, String snippet, String name) {
 		this.body = body;
 		this.number = number;
 		this.date = date;
 		this.id = id;
 		this.type = type;
 		this.name = name;
+		this.snippet = snippet.substring(0,(snippet.length() < 20 ? snippet.length() : 20));
 	}
 
 	public String getid() {
@@ -39,6 +41,10 @@ public class SMS {
 	
 	public String getType() {
 		return type;
+	}
+	
+	public String getSnippet() {
+		return snippet;
 	}
 
 	public String getDetails() {
