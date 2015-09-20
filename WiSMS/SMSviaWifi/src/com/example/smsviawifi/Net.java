@@ -34,7 +34,7 @@ public class Net extends Thread {
 		while (go) {
 			// i++;
 			try {
-				Sock.setSoTimeout(1000);
+				//Sock.setSoTimeout(1000);
 				Sock = ServSock.accept();
 				Log.d("WIFISMS", "connected...");
 
