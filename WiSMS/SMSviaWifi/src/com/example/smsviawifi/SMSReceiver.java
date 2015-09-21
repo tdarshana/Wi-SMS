@@ -53,7 +53,7 @@ public class SMSReceiver extends BroadcastReceiver {
 
 					OldSmsRetriever.update_message_files();
 					
-					String newmsg = "{\"newmsg\":\"1\"}";
+					String newmsg = "{\"newmsg\":\"1\",\"ID\":\""+ContactsRetriever.getContactId(senderNum, context)+"\"}";
 					
 					FileRead.writeFile(context.getFilesDir().getPath() + File.separator
 							+ "Data" + File.separator + "messages" + File.separator,

@@ -92,6 +92,7 @@ public class Net extends Thread {
 					out.println("HTTP/1.1 200 OK");
 					out.println("Content-Type: application/json\n\r\n\r");
 					String ss = FileRead.readFromFile(path.replace("%20", " "));
+					if(ss.equals("")) ss = "";
 					out.print(ss);
 					out.flush();
 				}else {
